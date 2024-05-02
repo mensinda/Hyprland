@@ -92,6 +92,13 @@ set(CMAKE_CXX_STANDARD 23)
 add_compile_definitions(WLR_USE_UNSTABLE)
 add_compile_options(-Wall -Wextra -Wno-unused-parameter -Wno-unused-value -Wno-missing-field-initializers -Wno-narrowing -Wno-pointer-arith)
 
+if(CMAKE_SYSTEM_PROCESSOR STREQUAL x86_64)
+    add_compile_options(-fpatchable-function-entry=12)
+    add_compile_definitions(HYPRLAND_PATCH_SIZE=12)
+else()
+    add_compile_definitions(HYPRLAND_PATCH_SIZE=-1)
+endif()
+
 set(CMAKE_EXECUTABLE_ENABLE_EXPORTS TRUE)
 
 message(STATUS "Checking deps...")
