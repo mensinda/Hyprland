@@ -10,6 +10,7 @@ project(Hyprland
     VERSION ${VER}
 )
 
+set(CMAKE_COLOR_DIAGNOSTICS ON)
 set(HYPRLAND_VERSION ${VER})
 set(PREFIX ${CMAKE_INSTALL_PREFIX})
 configure_file(hyprland.pc.in hyprland.pc @ONLY) 
