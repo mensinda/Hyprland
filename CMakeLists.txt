@@ -13,7 +13,7 @@ project(Hyprland
 set(CMAKE_COLOR_DIAGNOSTICS ON)
 set(HYPRLAND_VERSION ${VER})
 set(PREFIX ${CMAKE_INSTALL_PREFIX})
-configure_file(hyprland.pc.in hyprland.pc @ONLY) 
+configure_file(hyprland.pc.in hyprland.pc @ONLY)
 
 set(CMAKE_MESSAGE_LOG_LEVEL "STATUS")
 
@@ -93,10 +93,12 @@ add_compile_definitions(WLR_USE_UNSTABLE)
 add_compile_options(-Wall -Wextra -Wno-unused-parameter -Wno-unused-value -Wno-missing-field-initializers -Wno-narrowing -Wno-pointer-arith)
 
 if(CMAKE_SYSTEM_PROCESSOR STREQUAL x86_64)
-    add_compile_options(-fpatchable-function-entry=12)
-    add_compile_definitions(HYPRLAND_PATCH_SIZE=12)
+    add_compile_options(-fpatchable-function-entry=14,12)
+    add_compile_definitions(HYPRLAND_POST_PATCH_SIZE=2)
+    add_compile_definitions(HYPRLAND_PRE_PATCH_SIZE=12)
 else()
-    add_compile_definitions(HYPRLAND_PATCH_SIZE=-1)
+    add_compile_definitions(HYPRLAND_POST_PATCH_SIZE=-1)
+    add_compile_definitions(HYPRLAND_PRE_PATCH_SIZE=-1)
 endif()
 
 set(CMAKE_EXECUTABLE_ENABLE_EXPORTS TRUE)
@@ -222,7 +224,7 @@ function(protocol protoPath protoName external)
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
         execute_process(
             COMMAND ${WaylandScanner} private-code ${protoPath} protocols/${protoName}-protocol.c
-            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})  
+            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
         target_sources(Hyprland PRIVATE protocols/${protoName}-protocol.c)
     else()
         execute_process(
@@ -230,7 +232,7 @@ function(protocol protoPath protoName external)
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
         execute_process(
             COMMAND ${WaylandScanner} private-code ${WAYLAND_PROTOCOLS_DIR}/${protoPath} protocols/${protoName}-protocol.c
-            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})  
+            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
         target_sources(Hyprland PRIVATE protocols/${protoName}-protocol.c)
     endif()
 endfunction()

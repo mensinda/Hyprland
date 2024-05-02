@@ -67,10 +67,12 @@ endif
 
 # Insert NOPs for function hooks
 if target_machine.cpu_family() == 'x86_64'
-  add_project_arguments('-fpatchable-function-entry=12', language: 'cpp')
-  add_project_arguments('-DHYPRLAND_PATCH_SIZE=12', language: 'cpp')
+  add_project_arguments('-fpatchable-function-entry=14,12', language: 'cpp')
+  add_project_arguments('-DHYPRLAND_PRE_PATCH_SIZE=12', language: 'cpp')
+  add_project_arguments('-DHYPRLAND_POST_PATCH_SIZE=2', language: 'cpp')
 else
-  add_project_arguments('-DHYPRLAND_PATCH_SIZE=-1', language: 'cpp')
+  add_project_arguments('-DHYPRLAND_PRE_PATCH_SIZE=-1', language: 'cpp')
+  add_project_arguments('-DHYPRLAND_POST_PATCH_SIZE=-1', language: 'cpp')
 endif
 
 version_h = run_command('sh', '-c', 'scripts/generateVersion.sh')
